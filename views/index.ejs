@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaporPah - Pelaporan Sampah Liar</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2E8B57; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #444; margin-top: 30px; }
+        form { display: flex; flex-direction: column; gap: 15px; background: #fafafa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        input[type="text"], textarea { padding: 12px; font-size: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        input[type="file"] { padding: 10px 0; }
+        button { background-color: #2E8B57; color: white; padding: 15px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #246B43; }
+        .card { background: #fff; border: 1px solid #e1e1e1; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card strong { font-size: 1.1em; color: #222; }
+        .card .time { color: #777; font-size: 0.85em; margin-bottom: 10px; }
+        .card img { max-width: 100%; height: auto; border-radius: 5px; margin-top: 15px; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 LaporPah: Kawal Kebersihan Lingkungan</h1>
+
+        <form action="/lapor" method="POST" enctype="multipart/form-data">
+            <h2>Buat Laporan Baru</h2>
+            <input type="text" name="namaPelapor" placeholder="Nama Pelapor (Inisial diperbolehkan)" required>
+            <textarea name="deskripsi" rows="4" placeholder="Deskripsi Lokasi & Masalah (Contoh: Terdapat tumpukan sampah basah di ujung Jalan Mawar...)" required></textarea>
+            <label><strong>Unggah Foto Bukti Fisik:</strong></label>
+            <input type="file" name="fotoBukti" accept="image/*" required>
+            <button type="submit">Kirim Laporan ke Server</button>
+        </form>
+
+        <h2>Dasbor Pemantauan Publik</h2>
+        <% if (laporan && laporan.length > 0) { %>
+            <% laporan.forEach(function(item) { %>
+                <div class="card">
+                    <strong><%= item.nama_pelapor %></strong>
+                    <div class="time"><%= new Date(item.waktu).toLocaleString('id-ID') %></div>
+                    <p><%= item.deskripsi %></p>
+                    <% if (item.foto_url) { %>
+                        <img src="<%= item.foto_url %>" alt="Foto Laporan Warga">
+                    <% } %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p style="text-align: center; color: #666; font-style: italic;">Belum ada laporan yang masuk. Lingkungan Anda masih aman!</p>
+        <% } %>
+    </div>
+</body>
+</html>
