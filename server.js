@@ -36,6 +36,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: 5432,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.set('view engine', 'ejs');
